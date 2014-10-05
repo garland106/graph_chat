@@ -12,17 +12,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.utils.BranchMessage;
 import com.utils.Constants;
 import com.utils.Message;
 import com.utils.ParseAPIUtils;
@@ -49,8 +54,13 @@ public class ChatRoomActivity extends Activity
 		
 		//Initializes messagelist variables
 		ParseAPIUtils.mainmessageList = new ArrayList<Message>();
+		ParseAPIUtils.branchmessageList = new ArrayList<Message>();
+		ParseAPIUtils.branchIndexList = new ArrayList<BranchMessage>();
+		
 		mAdapter = new ChatRoomAdapter(getApplicationContext(), ParseAPIUtils.mainmessageList);
+		chatRoomList.setOnItemLongClickListener(branchlistener);
 		chatRoomList.setAdapter(mAdapter);
+		chatRoomList.setOnItemLongClickListener(branchlistener);
 		sendButton.setOnClickListener(sendListener);
 		//Set handler to refresh & poll for new msgs
 		handler.postDelayed(runnable, 100);
@@ -62,14 +72,42 @@ public class ChatRoomActivity extends Activity
 	    public void run() 
 	    {
 	    	receiveMessage();
-	    	handler.postDelayed(this, 100);
+	    	receiveMessageBranch();
+	    	handler.postDelayed(this, 200);
 	    }
 	};
 	
-	
+	private OnItemLongClickListener branchlistener = new OnItemLongClickListener() 
+	{
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) 
+		{
+			branchChat(pos);
+			Toast.makeText(getApplicationContext(), "Branching Chat" + pos, Toast.LENGTH_SHORT).show();
+			//ImageButton bb = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchButton;
+			//bb.setEnabled(true);
+			//bb.setVisibility(View.VISIBLE);
+			return true;
+		}
+		
+	};
 	/**
 	 * Parse API Function Calls
 	 */
+	public static void branchChat(int index)
+	{
+		ParseObject newBranch = new ParseObject(Constants.BRANCH_KEY);
+		newBranch.put(Constants.MESSAGE_INDEX, index);
+		newBranch.saveInBackground(new SaveCallback() 
+		{
+			@Override
+			public void done(ParseException e) 
+			{
+				receiveMessageBranch();
+			}
+		});
+	}
 	public static void sendMessage(String msg, EditText editText)
 	{
 		ParseObject newMsg = new ParseObject(Constants.MESSAGES_KEY);
@@ -123,6 +161,39 @@ public class ChatRoomActivity extends Activity
 	}
 	
 	
+	public static void receiveMessageBranch()
+	{
+		ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.BRANCH_KEY);
+		query.setLimit(Constants.MAX_MESSAGES);
+		query.orderByDescending("createdAt");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> messages, ParseException e) 
+			{
+				if (e == null) 
+				{
+					if(messages.size() == ParseAPIUtils.branchIndexList.size())
+					{
+						return;
+					}
+					else
+					{
+						final List<BranchMessage> newMessages = new ArrayList<BranchMessage>();					
+						int i = messages.size() - 1;
+						for (; i >= 0; i--) 
+						{
+							final BranchMessage message = new BranchMessage();
+							message.messageIndex = messages.get(i).getInt(Constants.MESSAGE_INDEX);
+							newMessages.add(message);
+						}
+						ParseAPIUtils.branchIndexList.clear();
+						ParseAPIUtils.branchIndexList.addAll(newMessages);
+					}
+				}
+			}
+		});
+	}
+	
+	
 	/**
 	 * @author garland
 	 * Adapters && Button List adapters
@@ -157,6 +228,7 @@ public class ChatRoomActivity extends Activity
 		{
 			TextView displayname;
             TextView chatline;
+            ImageButton branchButton;
         }
 		
 		public ChatRoomAdapter(Context context, List<Message> items) 

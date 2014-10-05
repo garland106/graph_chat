@@ -15,6 +15,7 @@ public class ParseAPIUtils
 	public static ParseUser user;
 	public static List<Message> mainmessageList;
 	public static List<Message> branchmessageList;
+	public static List<BranchMessage> branchIndexList;
 	
 	public static boolean getUser()
 	{
