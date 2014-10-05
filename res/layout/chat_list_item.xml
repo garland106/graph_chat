@@ -1,59 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="100dp"
     android:orientation="horizontal"
-    android:weightSum="10" >
+    android:weightSum="10"
 
-    <ImageButton
-        android:id="@+id/backChatButton"
-        android:layout_width="35dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="18dp"
-        android:layout_weight="1"
-        android:background="@drawable/gobackachat"
-        android:clickable="false" />
+>
 
-    <RelativeLayout
+
+<ImageButton
+	android:id="@+id/backChatButton"
+	android:layout_weight="1"
+	android:layout_width="35dp"
+	android:layout_height="match_parent"
+	android:layout_alignParentRight="true"
+	android:layout_alignParentTop="true"
+	android:layout_marginRight="18dp"
+	android:background="@drawable/gobackachat"
+	android:clickable="false"
+	android:visibility="invisible"
+/>
+    
+<RelativeLayout
+    android:layout_weight="8"
+    android:layout_width="wrap_content"
+    android:layout_height="100dip"
+    android:gravity="center_vertical"
+    android:ignoreGravity="@+id/friendIcon" >
+
+    <!-- The height is set to half the height of the parent, which is 64 dip -->
+
+	<TextView
+        android:id="@+id/chatroomname"
         android:layout_width="wrap_content"
-        android:layout_height="100dip"
-        android:layout_weight="8"
-        android:gravity="center_vertical"
-        android:ignoreGravity="@+id/friendIcon" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="13dp"
+        android:text="Bob Smith"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <!-- The height is set to half the height of the parent, which is 64 dip -->
+    <TextView
+        android:id="@+id/chatline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chatroomname"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="Name: my message here"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#0000ff" />
+    
+</RelativeLayout>
 
-        <TextView
-            android:id="@+id/chatroomname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="13dp"
-            android:text="Bob Smith"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/chatline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/chatroomname"
-            android:layout_centerHorizontal="true"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="Name: my message here"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#0000ff" />
-    </RelativeLayout>
-
-    <ImageButton
-        android:id="@+id/newSubChat"
-        android:layout_width="35dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/entersubchat"
-        android:clickable="false" />
+<ImageButton
+    android:id="@+id/newSubChat"
+    android:layout_width="35dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@drawable/entersubchat"
+    android:clickable="false" 
+    android:visibility="invisible"
+/>
 
 </LinearLayout>
