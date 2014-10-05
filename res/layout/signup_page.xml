@@ -24,10 +24,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignRight="@+id/signuplinearlayout"
+                android:paddingTop="20dp"
                 android:ems="10"
-                android:text="garlnd106@gmail.com"
                 android:hint="email address"
-                android:inputType="textEmailAddress" >
+                android:inputType="textEmailAddress"
+                android:text="garlnd106@gmail.com" >
 
                 <requestFocus />
             </EditText>
@@ -39,13 +40,13 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignRight="@+id/signuplinearlayout"
                 android:ems="10"
-                android:text="Garland"
                 android:hint="display name"
-                android:inputType="textEmailAddress" >
+                android:inputType="textEmailAddress"
+                android:text="Garland" >
 
                 <requestFocus />
             </EditText>
-            
+
             <EditText
                 android:id="@+id/userSignUpPassword"
                 android:layout_width="wrap_content"
@@ -53,12 +54,13 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/userSignUpDisplayname"
                 android:ems="10"
-                android:text="qwerty"
                 android:hint="password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="qwerty" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/signuplinearlayout"
@@ -79,6 +81,14 @@
                 android:layout_below="@+id/signuplinearlayout"
                 android:text="Sign Up" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_above="@+id/signuplinearlayout"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/syprLogo" />
 
     </RelativeLayout>
 
