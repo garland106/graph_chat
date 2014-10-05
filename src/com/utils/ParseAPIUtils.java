@@ -1,26 +1,20 @@
 package com.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class ParseAPIUtils 
 {
 	public static ParseUser user;
-	public static List<Message> messageList;
-	//public static List<>
+	public static List<Message> mainmessageList;
+	public static List<Message> branchmessageList;
 	
 	public static boolean getUser()
 	{

@@ -40,12 +40,7 @@ public class FriendsListActivity extends Activity
 		friendsLV = (ListView) findViewById(R.id.friendslistLV);
 		newChatButton = (ImageButton) findViewById(R.id.AddChatButton);
 		friendDetailList = new ArrayList<ChatFriend>();
-		
-		//make a fake friend
-		ChatFriend c = new ChatFriend();
-		c.firstname = "John";
-		c.lastname = "Smith";
-		friendDetailList.add(c);
+		addFakeFriends();
 		
 		mAdapter = new FriendsAdapter(getApplicationContext(), friendDetailList);
 		friendsLV.setAdapter(mAdapter);
@@ -53,6 +48,26 @@ public class FriendsListActivity extends Activity
 		newChatButton.setOnClickListener(addButtonListener);
 	}
 	
+	private void addFakeFriends()
+	{
+		//make a fake friend
+		ChatFriend c1 = new ChatFriend();
+		c1.firstname = "Chris";
+		c1.lastname = "O'Brien";
+		ChatFriend c2 = new ChatFriend();
+		c2.firstname = "Garland";
+		c2.lastname = "Chen";
+		ChatFriend c3 = new ChatFriend();
+		c3.firstname = "Jefferson";
+		c3.lastname = "Luu";
+		ChatFriend c4 = new ChatFriend();
+		c4.firstname = "Sy";
+		c4.lastname = "Adamofsky";
+		friendDetailList.add(c1);
+		friendDetailList.add(c2);
+		friendDetailList.add(c3);
+		friendDetailList.add(c4);
+	}
 	/**
 	 * Item Clicker listener for the listview
 	 */

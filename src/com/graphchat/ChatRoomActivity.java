@@ -48,8 +48,8 @@ public class ChatRoomActivity extends Activity
 		inputField = (EditText) findViewById(R.id.editMessage);
 		
 		//Initializes messagelist variables
-		ParseAPIUtils.messageList = new ArrayList<Message>();
-		mAdapter = new ChatRoomAdapter(getApplicationContext(), ParseAPIUtils.messageList);
+		ParseAPIUtils.mainmessageList = new ArrayList<Message>();
+		mAdapter = new ChatRoomAdapter(getApplicationContext(), ParseAPIUtils.mainmessageList);
 		chatRoomList.setAdapter(mAdapter);
 		sendButton.setOnClickListener(sendListener);
 		//Set handler to refresh & poll for new msgs
@@ -97,7 +97,7 @@ public class ChatRoomActivity extends Activity
 			{
 				if (e == null) 
 				{
-					if(messages.size() == ParseAPIUtils.messageList.size())
+					if(messages.size() == ParseAPIUtils.mainmessageList.size())
 					{
 						return;
 					}
@@ -112,8 +112,8 @@ public class ChatRoomActivity extends Activity
 							message.contents = messages.get(i).getString(Constants.MESSAGE_CONTENT);
 							newMessages.add(message);
 						}
-						ParseAPIUtils.messageList.clear();
-						ParseAPIUtils.messageList.addAll(newMessages);
+						ParseAPIUtils.mainmessageList.clear();
+						ParseAPIUtils.mainmessageList.addAll(newMessages);
 						mAdapter.notifyDataSetChanged();
 				    	chatRoomList.invalidate();
 					}
