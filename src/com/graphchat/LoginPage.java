@@ -1,6 +1,7 @@
 package com.graphchat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -8,11 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.LogInCallback;
 import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
+import com.parse.ParseObject;
+import com.utils.Message;
+import com.utils.ParseAPIUtils;
 
 public class LoginPage extends Activity
 {
@@ -20,6 +20,7 @@ public class LoginPage extends Activity
 	Button registerB = null;
 	EditText usernameEditText;
 	EditText passwordEditText;
+	EditText displayNameEditText;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -31,11 +32,13 @@ public class LoginPage extends Activity
 		registerB = (Button) findViewById(R.id.registerButton);
 		usernameEditText = (EditText) findViewById(R.id.userSignUpName);
 		passwordEditText = (EditText) findViewById(R.id.userSignUpPassword);
+		displayNameEditText = (EditText) findViewById(R.id.userSignUpDisplayname);
 		
 		loginB.setOnClickListener(loginListener);
 		registerB.setOnClickListener(registerListener);
 		
 		Parse.initialize(this, "j2hPTdOqQufughrO83ZWMCFgXUratrMTugAv5XTs", "y4fgHJizh6s21DWWidrPgvpZjm4gOpfcgMHHv8g1");
+		
 	}
 	
 	/**
@@ -48,26 +51,16 @@ public class LoginPage extends Activity
 		{
 			String un = usernameEditText.getText().toString();
 			String pw = passwordEditText.getText().toString();
-			if(un.equals("") || pw.equals(""))
+			String dn = displayNameEditText.getText().toString();
+			if(un.equals("") || pw.equals("") || dn.equals(""))
 			{
 				Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
 			}
 			else
-			{
-				ParseUser.logInInBackground(un, pw, new LogInCallback()
-				{
-					  public void done(ParseUser user, ParseException e) 
-					  {
-						  if (e == null) 
-						    {
-						    	Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
-						    } 
-						    else 
-						    {
-						    	Toast.makeText(getApplicationContext(), "Invalid Login", Toast.LENGTH_SHORT).show();
-						    }
-					  }
-					});
+			{ 
+				ParseAPIUtils.login(un, pw, dn, getApplicationContext());
+				Intent intent = new Intent(LoginPage.this, ChatRoomActivity.class);
+				startActivity(intent);
 			}
 		}
 	};
@@ -79,31 +72,14 @@ public class LoginPage extends Activity
 		{
 			String un = usernameEditText.getText().toString();
 			String pw = passwordEditText.getText().toString();
-			if(un.equals("") || pw.equals(""))
+			String dn = displayNameEditText.getText().toString();
+			if(un.equals("") || pw.equals("") || dn.equals(""))
 			{
 				Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
-				ParseUser user = new ParseUser();
-				user.setUsername(un);
-				user.setPassword(pw);
-				user.setEmail(un);
-				  
-				user.signUpInBackground(new SignUpCallback() 
-				{
-				  public void done(ParseException e) 
-				  {
-				    if (e == null) 
-				    {
-				    	Toast.makeText(getApplicationContext(), "Register Success", Toast.LENGTH_SHORT).show();
-				    } 
-				    else 
-				    {
-				    	Toast.makeText(getApplicationContext(), "Registration Failed", Toast.LENGTH_SHORT).show();
-				    }
-				  }
-				});
+				ParseAPIUtils.register(un, pw, dn, getApplicationContext());
 			}
 		}
 	};
