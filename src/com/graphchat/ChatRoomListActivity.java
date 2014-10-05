@@ -2,7 +2,6 @@ package com.graphchat;
 
 import java.util.List;
 
-import com.utils.chatFriend;
 import com.utils.chatRoom;
 
 import android.app.Activity;

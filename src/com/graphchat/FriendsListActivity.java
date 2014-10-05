@@ -1,5 +1,6 @@
 package com.graphchat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,11 +15,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.utils.chatFriend;
 
 public class FriendsListActivity extends Activity 
 {
-	private ListView friendsList;
+	private ListView friendsListView;
+	//private GestureDetectorCompat gDetect;
+	private FriendsAdapter fa;
+	//List<chatFriend> friends;
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -26,9 +31,66 @@ public class FriendsListActivity extends Activity
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.friends_page);
-		friendsList = (ListView) findViewById(R.id.friendslv);
+		final List<chatFriend> friends = new ArrayList<chatFriend>();
+		friendsListView = (ListView) findViewById(R.id.friendslv);
+		final chatFriend f1 = new chatFriend("Sy","Adamowsky");
+		final chatFriend f2 = new chatFriend("Garland","Chen");
+		final chatFriend f3 = new chatFriend("Chris","O'Brien");
+		final chatFriend f4 = new chatFriend("SY", "Luu");
+		friends.add(f1); friends.add(f2); friends.add(f3); friends.add(f4);
+		//System.out.println(f1.getFirstName() + " " + f1.getLastName());
+		fa = new FriendsAdapter(getApplicationContext(), friends);
 		
+		friendsListView.setAdapter(fa);
+		
+		//gDetect = new GestureDetectorCompat(this, new GestureListener());
 	}
+	
+	/*@Override
+	public boolean onTouchEvent(MotionEvent event){
+		  this.gDetect.onTouchEvent(event);
+		  return super.onTouchEvent(event);
+	}
+	
+	public class GestureListener extends GestureDetector.SimpleOnGestureListener 
+	{
+		private float flingMin = 100;
+		private float velocityMin = 100;
+		
+		@Override
+		public boolean onDown(MotionEvent event) {
+		  return true;
+		}
+		@Override
+		public boolean onFling(MotionEvent event1, MotionEvent event2,
+		    float velocityX, float velocityY) 
+		{
+			boolean forward = false;
+			boolean backward = false;
+			
+			float horizontalDiff = event2.getX() - event1.getX();
+			float verticalDiff = event2.getY() - event1.getY();
+			
+			float absHDiff = Math.abs(horizontalDiff);
+			float absVDiff = Math.abs(verticalDiff);
+			float absVelocityX = Math.abs(velocityX);
+			float absVelocityY = Math.abs(velocityY);
+			
+			if(absHDiff>absVDiff && absHDiff>flingMin && absVelocityX>velocityMin){
+				if(horizontalDiff>0) backward=true;
+				else forward=true;
+			}
+			else if(absVDiff>flingMin && absVelocityY>velocityMin){
+				  if(verticalDiff>0) backward=true;
+				  else forward=true;
+			}
+			
+			//user is cycling forward through friends
+			
+			return true;
+		}
+	}
+	*/
 	
 	private class FriendsAdapter extends ArrayAdapter
 	{
@@ -86,6 +148,16 @@ public class FriendsListActivity extends Activity
 		
 	}
 
-
+	public class chatFriend 
+	{
+		public String firstname;
+		public String lastname;
+		//picture
+		public chatFriend(String fn, String ln)
+		{
+			firstname = fn;
+			lastname  = ln;
+		}
+	}
 	
 }
