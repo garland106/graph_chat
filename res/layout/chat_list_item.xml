@@ -20,6 +20,7 @@
 	android:layout_marginRight="18dp"
 	android:background="@drawable/gobackachat"
 	android:clickable="false"
+	android:visibility="false"
 />
     
 <RelativeLayout
@@ -61,6 +62,8 @@
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:background="@drawable/entersubchat"
-    android:clickable="false" />
+    android:clickable="false" 
+    android:visibility="false"
+/>
 
 </LinearLayout>
