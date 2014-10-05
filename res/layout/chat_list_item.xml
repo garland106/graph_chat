@@ -10,18 +10,7 @@
 >
 
 
-<ImageButton
-	android:id="@+id/backChatButton"
-	android:layout_weight="1"
-	android:layout_width="35dp"
-	android:layout_height="match_parent"
-	android:layout_alignParentRight="true"
-	android:layout_alignParentTop="true"
-	android:layout_marginRight="18dp"
-	android:background="@drawable/gobackachat"
-	android:clickable="false"
-	android:visibility="invisible"
-/>
+
     
 <RelativeLayout
     android:layout_weight="8"
@@ -56,14 +45,6 @@
     
 </RelativeLayout>
 
-<ImageButton
-    android:id="@+id/newSubChat"
-    android:layout_width="35dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:background="@drawable/entersubchat"
-    android:clickable="false" 
-    android:visibility="invisible"
-/>
+
 
 </LinearLayout>

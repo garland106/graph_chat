@@ -39,6 +39,8 @@ public class ChatRoomActivity extends Activity
 	private EditText inputField;
 	private static ChatRoomAdapter mAdapter;
 	private Handler handler = new Handler();
+	private ImageButton backB;
+	private ImageButton nextB;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -51,7 +53,11 @@ public class ChatRoomActivity extends Activity
 		chatRoomList = (ListView) findViewById(R.id.lvChat);
 		sendButton = (Button) findViewById(R.id.btnSend);
 		inputField = (EditText) findViewById(R.id.editMessage);
+		nextB = (ImageButton) findViewById(R.id.newSubChat);
+		backB = (ImageButton) findViewById(R.id.backChatButton);
 		
+		nextB.setOnClickListener(branchNextListener);
+		backB.setOnClickListener(branchBackListener);
 		//Initializes messagelist variables
 		ParseAPIUtils.mainmessageList = new ArrayList<Message>();
 		ParseAPIUtils.branchmessageList = new ArrayList<Message>();
@@ -71,7 +77,14 @@ public class ChatRoomActivity extends Activity
 	    @Override
 	    public void run() 
 	    {
-	    	receiveMessage();
+	    	if(!ParseAPIUtils.onBranch)
+	    	{
+	    		receiveMessage();
+	    	}
+	    	else
+	    	{
+	    		receiveMessageFromBranch();
+	    	}
 	    	receiveMessageBranch();
 	    	handler.postDelayed(this, 200);
 	    }
@@ -83,13 +96,18 @@ public class ChatRoomActivity extends Activity
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) 
 		{
 			branchChat(pos);
-			Toast.makeText(getApplicationContext(), "Branching Chat" + pos, Toast.LENGTH_SHORT).show();
-			ImageButton bb = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchBack;
-			ImageButton bn = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchNext;
+			Toast.makeText(getApplicationContext(), "Branching Chat", Toast.LENGTH_SHORT).show();
+			//ImageButton bn = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchBack;
+			//ImageButton bb = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchNext;
+			/*
 			bb.setEnabled(true);
 			bb.setVisibility(View.VISIBLE);
+			bb.setOnClickListener(branchBackListener);
 			bn.setEnabled(true);
 			bn.setVisibility(View.VISIBLE);
+			bn.setOnClickListener(branchNextListener);
+			*/
+			ParseAPIUtils.onBranch = true;
 			return true;
 		}	
 	};
@@ -99,7 +117,9 @@ public class ChatRoomActivity extends Activity
 		@Override
 		public void onClick(View v) 
 		{
-			
+			Toast.makeText(getApplicationContext(), "Branching Next", Toast.LENGTH_SHORT).show();
+			ParseAPIUtils.onBranch = true;
+			receiveMessage();
 		}	
 	};
 	
@@ -108,7 +128,9 @@ public class ChatRoomActivity extends Activity
 		@Override
 		public void onClick(View v) 
 		{
-			
+			Toast.makeText(getApplicationContext(), "Branching Back", Toast.LENGTH_SHORT).show();
+			ParseAPIUtils.onBranch = false;
+			receiveMessageFromBranch();
 		}	
 	};
 	/**
@@ -129,20 +151,38 @@ public class ChatRoomActivity extends Activity
 	}
 	public static void sendMessage(String msg, EditText editText)
 	{
-		ParseObject newMsg = new ParseObject(Constants.MESSAGES_KEY);
-		newMsg.put(Constants.USER_ID_KEY, ParseAPIUtils.user.getUsername());
-		newMsg.put(Constants.MESSAGE_CONTENT, msg);
-		newMsg.saveInBackground(new SaveCallback() 
+		if(!ParseAPIUtils.onBranch)
 		{
-			@Override
-			public void done(ParseException e) 
+			ParseObject newMsg = new ParseObject(Constants.MESSAGES_KEY);
+			newMsg.put(Constants.USER_ID_KEY, ParseAPIUtils.user.getUsername());
+			newMsg.put(Constants.MESSAGE_CONTENT, msg);
+			newMsg.saveInBackground(new SaveCallback() 
 			{
-				receiveMessage();
-			}
-		});
+				@Override
+				public void done(ParseException e) 
+				{
+					receiveMessage();
+				}
+			});
+		}
+		else
+		{
+			ParseObject newMsg = new ParseObject(Constants.BRANCHMESSAGE_KEY);
+			newMsg.put(Constants.USER_ID_KEY, ParseAPIUtils.user.getUsername());
+			newMsg.put(Constants.MESSAGE_CONTENT, msg);
+			newMsg.saveInBackground(new SaveCallback() 
+			{
+				@Override
+				public void done(ParseException e) 
+				{
+					receiveMessageFromBranch();
+				}
+			});
+		}
 		editText.setText("");
 		editText.setHint("enter message here");
 	}
+	
 	
 	public static void receiveMessage()
 	{
@@ -212,6 +252,41 @@ public class ChatRoomActivity extends Activity
 		});
 	}
 	
+	public static void receiveMessageFromBranch()
+	{
+		ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.BRANCHMESSAGE_KEY);
+		query.setLimit(Constants.MAX_MESSAGES);
+		query.orderByDescending("createdAt");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> messages, ParseException e) 
+			{
+				if (e == null) 
+				{
+					if(messages.size() == ParseAPIUtils.mainmessageList.size())
+					{
+						return;
+					}
+					else
+					{
+						final List<Message> newMessages = new ArrayList<Message>();					
+						int i = messages.size() - 1;
+						for (; i >= 0; i--) 
+						{
+							final Message message = new Message();
+							message.user = messages.get(i).getString(Constants.USER_ID_KEY);
+							message.contents = messages.get(i).getString(Constants.MESSAGE_CONTENT);
+							newMessages.add(message);
+						}
+						ParseAPIUtils.mainmessageList.clear();
+						ParseAPIUtils.mainmessageList.addAll(newMessages);
+						mAdapter.notifyDataSetChanged();
+				    	chatRoomList.invalidate();
+					}
+				}
+			}
+		});
+	}
+	
 	
 	/**
 	 * @author garland
@@ -247,8 +322,8 @@ public class ChatRoomActivity extends Activity
 		{
 			TextView displayname;
             TextView chatline;
-            ImageButton branchNext;
-            ImageButton branchBack;
+            //ImageButton branchNext;
+            //ImageButton branchBack;
         }
 		
 		public ChatRoomAdapter(Context context, List<Message> items) 
@@ -286,8 +361,8 @@ public class ChatRoomActivity extends Activity
 			Message mMsg = msgList.get(position);
 			viewholder.displayname = (TextView) view.findViewById(R.id.chatroomname);
 			viewholder.chatline = (TextView) view.findViewById(R.id.chatline);
-			viewholder.branchNext = (ImageButton) view.findViewById(R.id.backChatButton);
-			viewholder.branchBack = (ImageButton) view.findViewById(R.id.newSubChat);
+			//viewholder.branchNext = (ImageButton) view.findViewById(R.id.backChatButton);
+			//viewholder.branchBack = (ImageButton) view.findViewById(R.id.newSubChat);
 			viewholder.chatline.setText(mMsg.contents);
 			viewholder.displayname.setText(mMsg.user);
 			view.setTag(viewholder);

@@ -13,5 +13,6 @@ public class Constants
 	public static final String CLIENT_KEY = "y4fgHJizh6s21DWWidrPgvpZjm4gOpfcgMHHv8g1";
 	public static final String BRANCH_KEY = "branch";
 	public static final String MESSAGE_INDEX = "messageindex";
+	public static final String BRANCHMESSAGE_KEY = "branchmessage";
 	
 }

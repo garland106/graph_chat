@@ -5,6 +5,16 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
+    <ImageButton
+	android:id="@+id/backChatButton"
+	android:layout_weight="1"
+	android:layout_width="35dp"
+	android:layout_height="35dp"
+	android:layout_alignParentRight="true"
+	android:layout_alignParentTop="true"
+	android:layout_marginRight="18dp"
+	android:background="@drawable/gobackachat"
+/>
     <TextView
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -14,6 +24,13 @@
             android:text="USC Football"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="30sp" />
+    <ImageButton
+    android:id="@+id/newSubChat"
+    android:layout_width="35dp"
+    android:layout_height="35dp"
+    android:layout_weight="1"
+    android:background="@drawable/entersubchat"
+/>
     
 
     <ListView
