@@ -6,7 +6,9 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -14,14 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class FriendsListActivity extends Activity 
 {
 	private ListView friendsListView;
-	//private GestureDetectorCompat gDetect;
+	private GestureListener gDetect;
 	private FriendsAdapter fa;
-	//List<chatFriend> friends;
+	List<chatFriend> friends;
 	
 	
 	
@@ -31,24 +34,20 @@ public class FriendsListActivity extends Activity
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.friends_page);
-		final List<chatFriend> friends = new ArrayList<chatFriend>();
+		friends = new ArrayList<chatFriend>();
 		friendsListView = (ListView) findViewById(R.id.friendslv);
-		final chatFriend f1 = new chatFriend("Sy","Adamowsky");
-		final chatFriend f2 = new chatFriend("Garland","Chen");
-		final chatFriend f3 = new chatFriend("Chris","O'Brien");
-		final chatFriend f4 = new chatFriend("SY", "Luu");
-		friends.add(f1); friends.add(f2); friends.add(f3); friends.add(f4);
-		//System.out.println(f1.getFirstName() + " " + f1.getLastName());
-		fa = new FriendsAdapter(getApplicationContext(), friends);
 		
+		final chatFriend f1 = new chatFriend("Sy","Adamowsky");
+		for(int i=0; i<15; i++) friends.add(f1);
+		
+		fa = new FriendsAdapter(getApplicationContext(), friends);
 		friendsListView.setAdapter(fa);
 		
-		//gDetect = new GestureDetectorCompat(this, new GestureListener());
+		gDetect = new GestureListener();
 	}
 	
-	/*@Override
+	@Override
 	public boolean onTouchEvent(MotionEvent event){
-		  this.gDetect.onTouchEvent(event);
 		  return super.onTouchEvent(event);
 	}
 	
@@ -62,35 +61,38 @@ public class FriendsListActivity extends Activity
 		  return true;
 		}
 		@Override
-		public boolean onFling(MotionEvent event1, MotionEvent event2,
+		public boolean onFling(MotionEvent e1, MotionEvent e2,
 		    float velocityX, float velocityY) 
 		{
-			boolean forward = false;
-			boolean backward = false;
-			
-			float horizontalDiff = event2.getX() - event1.getX();
-			float verticalDiff = event2.getY() - event1.getY();
-			
-			float absHDiff = Math.abs(horizontalDiff);
-			float absVDiff = Math.abs(verticalDiff);
-			float absVelocityX = Math.abs(velocityX);
-			float absVelocityY = Math.abs(velocityY);
-			
-			if(absHDiff>absVDiff && absHDiff>flingMin && absVelocityX>velocityMin){
-				if(horizontalDiff>0) backward=true;
-				else forward=true;
-			}
-			else if(absVDiff>flingMin && absVelocityY>velocityMin){
-				  if(verticalDiff>0) backward=true;
-				  else forward=true;
-			}
-			
-			//user is cycling forward through friends
-			
-			return true;
+			boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > flingMin && Math.abs(velocityX) > velocityMin) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                            onSwipeLeft();
+                        }
+                        result = true;
+                    }
+                } 
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
 		}
+		
+		public void onSwipeRight() {
+			FriendsListActivity.this.finish();
+			
+	    }
+
+	    public void onSwipeLeft() {
+	    	Toast.makeText(FriendsListActivity.this, "left", Toast.LENGTH_SHORT).show();
+	    }
 	}
-	*/
 	
 	private class FriendsAdapter extends ArrayAdapter
 	{
