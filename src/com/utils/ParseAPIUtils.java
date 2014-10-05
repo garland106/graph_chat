@@ -32,9 +32,15 @@ public class ParseAPIUtils
 		return true;
 	}
 	
-	public static void login(String un, String pw, final Context context)
+	public static void login(String un, String pw, String dn, final Context context)
 	{
-		ParseUser.logInInBackground(un, pw, new LogInCallback()
+		user = new ParseUser();
+		user.setUsername(dn);
+		user.setPassword(pw);
+		user.setEmail(un);
+		user.add(Constants.DISPLAY_NAME, dn);
+		
+		ParseUser.logInInBackground(dn, pw, new LogInCallback()
 		{
 			  public void done(ParseUser user, ParseException e) 
 			  {
@@ -51,13 +57,13 @@ public class ParseAPIUtils
 		getUser();
 	}
 	
-	public static void register(String un, String pw, final Context context)
+	public static void register(String un, String pw, String dn, final Context context)
 	{
 		user = new ParseUser();
-		user.setUsername(un);
+		user.setUsername(dn);
 		user.setPassword(pw);
 		user.setEmail(un);
-		  
+		 
 		user.signUpInBackground(new SignUpCallback() 
 		{
 		  public void done(ParseException e) 
@@ -77,7 +83,7 @@ public class ParseAPIUtils
 	public static void sendMessage(String msg, EditText editText)
 	{
 		ParseObject newMsg = new ParseObject(Constants.MESSAGES_KEY);
-		newMsg.put(Constants.USER_ID_KEY, user.getObjectId());
+		newMsg.put(Constants.USER_ID_KEY, user.getUsername());
 		newMsg.put(Constants.MESSAGE_CONTENT, msg);
 		newMsg.saveInBackground(new SaveCallback() 
 		{

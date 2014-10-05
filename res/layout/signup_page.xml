@@ -26,18 +26,32 @@
                 android:layout_alignRight="@+id/signuplinearlayout"
                 android:ems="10"
                 android:text="garlnd106@gmail.com"
-                android:hint="username"
+                android:hint="email address"
                 android:inputType="textEmailAddress" >
 
                 <requestFocus />
             </EditText>
 
             <EditText
+                android:id="@+id/userSignUpDisplayname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/signuplinearlayout"
+                android:ems="10"
+                android:text="Garland"
+                android:hint="display name"
+                android:inputType="textEmailAddress" >
+
+                <requestFocus />
+            </EditText>
+            
+            <EditText
                 android:id="@+id/userSignUpPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/userSignUpName"
+                android:layout_below="@+id/userSignUpDisplayname"
                 android:ems="10"
                 android:text="qwerty"
                 android:hint="password"

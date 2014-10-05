@@ -20,6 +20,7 @@ public class LoginPage extends Activity
 	Button registerB = null;
 	EditText usernameEditText;
 	EditText passwordEditText;
+	EditText displayNameEditText;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -31,6 +32,7 @@ public class LoginPage extends Activity
 		registerB = (Button) findViewById(R.id.registerButton);
 		usernameEditText = (EditText) findViewById(R.id.userSignUpName);
 		passwordEditText = (EditText) findViewById(R.id.userSignUpPassword);
+		displayNameEditText = (EditText) findViewById(R.id.userSignUpDisplayname);
 		
 		loginB.setOnClickListener(loginListener);
 		registerB.setOnClickListener(registerListener);
@@ -49,13 +51,14 @@ public class LoginPage extends Activity
 		{
 			String un = usernameEditText.getText().toString();
 			String pw = passwordEditText.getText().toString();
-			if(un.equals("") || pw.equals(""))
+			String dn = displayNameEditText.getText().toString();
+			if(un.equals("") || pw.equals("") || dn.equals(""))
 			{
 				Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
 			}
 			else
-			{
-				ParseAPIUtils.login(un, pw, getApplicationContext());
+			{ 
+				ParseAPIUtils.login(un, pw, dn, getApplicationContext());
 				Intent intent = new Intent(LoginPage.this, ChatRoomActivity.class);
 				startActivity(intent);
 			}
@@ -69,13 +72,14 @@ public class LoginPage extends Activity
 		{
 			String un = usernameEditText.getText().toString();
 			String pw = passwordEditText.getText().toString();
-			if(un.equals("") || pw.equals(""))
+			String dn = displayNameEditText.getText().toString();
+			if(un.equals("") || pw.equals("") || dn.equals(""))
 			{
 				Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
-				ParseAPIUtils.register(un, pw, getApplicationContext());
+				ParseAPIUtils.register(un, pw, dn, getApplicationContext());
 			}
 		}
 	};

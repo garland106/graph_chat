@@ -63,7 +63,7 @@ public class ChatRoomActivity extends Activity
 	    	ParseAPIUtils.receiveMessage(); 
 	    	mAdapter.notifyDataSetChanged();
 			chatRoomList.invalidate();
-	    	handler.postDelayed(this, 10);
+	    	handler.postDelayed(this, 100);
 	    }
 	};
 	
