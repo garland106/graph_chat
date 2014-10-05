@@ -3,11 +3,7 @@ package com.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-import com.graphchat.FriendsListActivity.chatFriend;
-=======
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,7 +15,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
->>>>>>> bc02e243d124d3a351274d0d686ebb22c9b5418f
 
 public class ParseAPIUtils 
 {
