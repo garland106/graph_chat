@@ -5,98 +5,80 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.utils.ChatFriend;
+
 
 public class FriendsListActivity extends Activity 
 {
-	private ListView friendsListView;
-	private GestureListener gDetect;
-	private FriendsAdapter fa;
-	List<chatFriend> friends;
-	
-	
-	
+	private ListView friendsLV;
+	private ImageButton newChatButton;
+	private FriendsAdapter mAdapter;
+	private List<ChatFriend> friendDetailList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.friends_page);
-		friends = new ArrayList<chatFriend>();
-		friendsListView = (ListView) findViewById(R.id.friendslv);
 		
-		final chatFriend f1 = new chatFriend("Sy","Adamowsky");
-		for(int i=0; i<15; i++) friends.add(f1);
-		
-		fa = new FriendsAdapter(getApplicationContext(), friends);
-		friendsListView.setAdapter(fa);
-		
-		gDetect = new GestureListener();
+		friendsLV = (ListView) findViewById(R.id.friendslistLV);
+		newChatButton = (ImageButton) findViewById(R.id.AddChatButton);
+		friendDetailList = new ArrayList<ChatFriend>();
+		ChatFriend c = new ChatFriend();
+		c.firstname = "John";
+		c.lastname = "Smith";
+		friendDetailList.add(c);
+		mAdapter = new FriendsAdapter(getApplicationContext(), friendDetailList);
+		friendsLV.setAdapter(mAdapter);
+		friendsLV.setOnItemClickListener(newchatlistener);
+		newChatButton.setOnClickListener(addButtonListener);
 	}
 	
-	@Override
-	public boolean onTouchEvent(MotionEvent event){
-		  return super.onTouchEvent(event);
-	}
-	
-	public class GestureListener extends GestureDetector.SimpleOnGestureListener 
+	/**
+	 * Item Clicker listener for the listview
+	 */
+	private OnItemClickListener newchatlistener = new OnItemClickListener() 
 	{
-		private float flingMin = 100;
-		private float velocityMin = 100;
-		
-		@Override
-		public boolean onDown(MotionEvent event) {
-		  return true;
-		}
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2,
-		    float velocityX, float velocityY) 
+		public void onItemClick(AdapterView parent, View v, int position,long id) 
 		{
-			boolean result = false;
-            try {
-                float diffY = e2.getY() - e1.getY();
-                float diffX = e2.getX() - e1.getX();
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (Math.abs(diffX) > flingMin && Math.abs(velocityX) > velocityMin) {
-                        if (diffX > 0) {
-                            onSwipeRight();
-                        } else {
-                            onSwipeLeft();
-                        }
-                        result = true;
-                    }
-                } 
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            return result;
+			String msg = "Added: " + friendDetailList.get(position).firstname + " "
+					+ friendDetailList.get(position).lastname;
+			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 		}
-		
-		public void onSwipeRight() {
-			FriendsListActivity.this.finish();
-			
-	    }
-
-	    public void onSwipeLeft() {
-	    	Toast.makeText(FriendsListActivity.this, "left", Toast.LENGTH_SHORT).show();
-	    }
-	}
+	};
+	
+	/**
+	 * ButtonClickListener for add button
+	 */
+	private OnClickListener addButtonListener = new View.OnClickListener() 
+	{
+		@Override
+		public void onClick(View v) 
+		{
+			Intent intent = new Intent(FriendsListActivity.this, ChatRoomActivity.class);
+			startActivity(intent);
+		}
+	};
 	
 	private class FriendsAdapter extends ArrayAdapter
 	{
-		private List<chatFriend> mfriendslist;
+		private List<ChatFriend> mfriendslist;
 		private Context mContext = null;
 		private LayoutInflater inflater = null;
 		
@@ -107,7 +89,7 @@ public class FriendsListActivity extends Activity
             TextView line2;
         }
 		
-		public FriendsAdapter(Context context, List<chatFriend> items) 
+		public FriendsAdapter(Context context, List<ChatFriend> items) 
 		{
 			super(context, R.layout.friends_list_item, items);
 			this.mfriendslist = items;
@@ -122,7 +104,7 @@ public class FriendsListActivity extends Activity
 		}
 
 		@Override
-		public chatFriend getItem(int item) 
+		public ChatFriend getItem(int item) 
 		{
 			return mfriendslist.get(item);
 		}
@@ -139,27 +121,14 @@ public class FriendsListActivity extends Activity
 			ViewHolder viewholder = new ViewHolder();
 			view = inflater.inflate(R.layout.friends_list_item, parent, false);
 			
-			chatFriend currentFriend = mfriendslist.get(position);
+			ChatFriend current = mfriendslist.get(position);
 			viewholder.line1 = (TextView) view.findViewById(R.id.line1);
 			viewholder.line2 = (TextView) view.findViewById(R.id.line2);
-			viewholder.line1.setText(currentFriend.firstname);
-			viewholder.line2.setText(currentFriend.lastname);
+			viewholder.line1.setText(current.firstname);
+			viewholder.line2.setText(current.lastname);
 			view.setTag(viewholder);
 			return view;
 		}
 		
 	}
-
-	public class chatFriend 
-	{
-		public String firstname;
-		public String lastname;
-		//picture
-		public chatFriend(String fn, String ln)
-		{
-			firstname = fn;
-			lastname  = ln;
-		}
-	}
-	
 }

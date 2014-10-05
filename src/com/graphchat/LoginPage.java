@@ -10,8 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.Parse;
-import com.parse.ParseObject;
-import com.utils.Message;
+import com.utils.Constants;
 import com.utils.ParseAPIUtils;
 
 public class LoginPage extends Activity
@@ -37,12 +36,12 @@ public class LoginPage extends Activity
 		loginB.setOnClickListener(loginListener);
 		registerB.setOnClickListener(registerListener);
 		
-		Parse.initialize(this, "j2hPTdOqQufughrO83ZWMCFgXUratrMTugAv5XTs", "y4fgHJizh6s21DWWidrPgvpZjm4gOpfcgMHHv8g1");
+		Parse.initialize(this, Constants.APP_ID, Constants.CLIENT_KEY);
 		
 	}
 	
 	/**
-	 * OnClickListeners for the button
+	 * OnClickListeners for Buttons
 	 */
 	private OnClickListener loginListener = new View.OnClickListener() 
 	{	
@@ -59,7 +58,7 @@ public class LoginPage extends Activity
 			else
 			{ 
 				ParseAPIUtils.login(un, pw, dn, getApplicationContext());
-				Intent intent = new Intent(LoginPage.this, ChatRoomActivity.class);
+				Intent intent = new Intent(LoginPage.this, FriendsListActivity.class);
 				startActivity(intent);
 			}
 		}

@@ -20,6 +20,7 @@ public class ParseAPIUtils
 {
 	public static ParseUser user;
 	public static List<Message> messageList;
+	//public static List<>
 	
 	public static boolean getUser()
 	{

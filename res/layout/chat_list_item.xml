@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dip"
+    android:layout_height="80dip"
     android:gravity="center_vertical"
     android:ignoreGravity="@+id/friendIcon" >
 
@@ -25,8 +25,9 @@
         android:layout_centerHorizontal="true"
         android:ellipsize="marquee"
         android:paddingLeft="9dip"
+        android:paddingRight="20dip"
         android:singleLine="true"
-        android:text="Name: my message here"
+        android:text="my message here"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#0000ff" />
 
@@ -38,22 +39,5 @@
         android:layout_alignParentTop="true"
         android:text="Garland C."
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/name"
-        android:layout_centerVertical="true"
-        android:text="1"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <Button
-        android:id="@+id/upVote"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/textView1"
-        android:text="Button" />
 
 </RelativeLayout>

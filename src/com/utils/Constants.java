@@ -8,4 +8,7 @@ public class Constants
 	public static final String BODY_KEY = "body";
 	public static final String DISPLAY_NAME = "displayname";
 	public static final int MAX_MESSAGES = 50;
+	
+	public static final String APP_ID = "j2hPTdOqQufughrO83ZWMCFgXUratrMTugAv5XTs";
+	public static final String CLIENT_KEY = "y4fgHJizh6s21DWWidrPgvpZjm4gOpfcgMHHv8g1";
 }

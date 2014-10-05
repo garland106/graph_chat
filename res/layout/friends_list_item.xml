@@ -24,6 +24,7 @@
         android:layout_toRightOf="@id/friendIcon"
         android:textColor="@android:color/black"
         android:ellipsize="marquee"
+        android:text="First"
         android:singleLine="true" />
 
     <!-- The height is set to half the height of the parent, which is 64 dip -->
@@ -36,6 +37,7 @@
         android:textColor="@android:color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
+        android:text="Last"
         android:singleLine="true"  />
 
 

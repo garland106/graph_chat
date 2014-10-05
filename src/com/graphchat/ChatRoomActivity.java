@@ -25,7 +25,6 @@ import com.utils.ParseAPIUtils;
 public class ChatRoomActivity extends Activity 
 {
 	private ListView chatRoomList;
-	private List<String> text;
 	private Button sendButton;
 	private EditText inputField;
 	private ChatRoomAdapter mAdapter;
@@ -36,17 +35,15 @@ public class ChatRoomActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.chatroom);
+		setContentView(R.layout.chatroom_page);
 		
-		//ParseAPIUtils.getUser();
 		//Makes Chatroom & sets adapter
-		chatRoomList = (ListView)findViewById(R.id.lvChat);
+		chatRoomList = (ListView) findViewById(R.id.lvChat);
 		sendButton = (Button) findViewById(R.id.btnSend);
 		inputField = (EditText) findViewById(R.id.editMessage);
+		
+		//Initializes messagelist variables
 		ParseAPIUtils.messageList = new ArrayList<Message>();
-		//text = new ArrayList<String>();
-		//text.add("chris");
-		//text.add("sy");
 		mAdapter = new ChatRoomAdapter(getApplicationContext(), ParseAPIUtils.messageList);
 		chatRoomList.setAdapter(mAdapter);
 		sendButton.setOnClickListener(sendListener);
@@ -105,7 +102,7 @@ public class ChatRoomActivity extends Activity
 		
 		public ChatRoomAdapter(Context context, List<Message> items) 
 		{
-			super(context, R.layout.chatroom_list_item, items);
+			super(context, R.layout.chat_list_item, items);
 			this.msgList = items;
 			this.mContext = context;
 			this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
