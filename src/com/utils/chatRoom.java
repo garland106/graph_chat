@@ -18,10 +18,16 @@ public class chatRoom
 	public void addFriend(chatFriend friend) { friendsInRoom.add(friend); }
 	
 	public String getRoomName() { return name; }
-	public ArrayList<String> getNamesOfFriendsInRoom()
+	public String getNamesOfFriendsInRoom()
 	{
-		ArrayList<String> returnMe = new ArrayList<String>();
-		for(int i = 0; i < friendsInRoom.size(); i++) { returnMe.add(friendsInRoom.get(i).firstname + " " + friendsInRoom.get(i).lastname); }
+		String returnMe = "";
+		for(int i = 0; i < friendsInRoom.size(); i++)
+		{
+			if(i != (friendsInRoom.size() - 1))
+				returnMe += friendsInRoom.get(i).firstname + " " + friendsInRoom.get(i).lastname.charAt(0) + ", ";
+			else
+				returnMe += friendsInRoom.get(i).firstname + " " + friendsInRoom.get(i).lastname.charAt(0);
+		}
 		return returnMe;
 	}
 }
