@@ -18,16 +18,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+import com.utils.Constants;
 import com.utils.Message;
 import com.utils.ParseAPIUtils;
 
 public class ChatRoomActivity extends Activity 
 {
-	private ListView chatRoomList;
+	private static ListView chatRoomList;
 	private Button sendButton;
 	private EditText inputField;
-	private ChatRoomAdapter mAdapter;
+	private static ChatRoomAdapter mAdapter;
 	private Handler handler = new Handler();
 	
 	@Override
@@ -47,7 +52,6 @@ public class ChatRoomActivity extends Activity
 		mAdapter = new ChatRoomAdapter(getApplicationContext(), ParseAPIUtils.messageList);
 		chatRoomList.setAdapter(mAdapter);
 		sendButton.setOnClickListener(sendListener);
-		
 		//Set handler to refresh & poll for new msgs
 		handler.postDelayed(runnable, 100);
 	}
@@ -57,12 +61,66 @@ public class ChatRoomActivity extends Activity
 	    @Override
 	    public void run() 
 	    {
-	    	ParseAPIUtils.receiveMessage(); 
-	    	mAdapter.notifyDataSetChanged();
-			chatRoomList.invalidate();
+	    	receiveMessage();
 	    	handler.postDelayed(this, 100);
 	    }
 	};
+	
+	
+	/**
+	 * Parse API Function Calls
+	 */
+	public static void sendMessage(String msg, EditText editText)
+	{
+		ParseObject newMsg = new ParseObject(Constants.MESSAGES_KEY);
+		newMsg.put(Constants.USER_ID_KEY, ParseAPIUtils.user.getUsername());
+		newMsg.put(Constants.MESSAGE_CONTENT, msg);
+		newMsg.saveInBackground(new SaveCallback() 
+		{
+			@Override
+			public void done(ParseException e) 
+			{
+				receiveMessage();
+			}
+		});
+		editText.setText("");
+		editText.setHint("enter message here");
+	}
+	
+	public static void receiveMessage()
+	{
+		ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.MESSAGES_KEY);
+		query.setLimit(Constants.MAX_MESSAGES);
+		query.orderByDescending("createdAt");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> messages, ParseException e) 
+			{
+				if (e == null) 
+				{
+					if(messages.size() == ParseAPIUtils.messageList.size())
+					{
+						return;
+					}
+					else
+					{
+						final List<Message> newMessages = new ArrayList<Message>();					
+						int i = messages.size() - 1;
+						for (; i >= 0; i--) 
+						{
+							final Message message = new Message();
+							message.user = messages.get(i).getString(Constants.USER_ID_KEY);
+							message.contents = messages.get(i).getString(Constants.MESSAGE_CONTENT);
+							newMessages.add(message);
+						}
+						ParseAPIUtils.messageList.clear();
+						ParseAPIUtils.messageList.addAll(newMessages);
+						mAdapter.notifyDataSetChanged();
+				    	chatRoomList.invalidate();
+					}
+				}
+			}
+		});
+	}
 	
 	
 	/**
@@ -82,7 +140,7 @@ public class ChatRoomActivity extends Activity
 			}
 			else if(!msg.equals(""))
 			{
-				ParseAPIUtils.sendMessage(msg, inputField);
+				sendMessage(msg, inputField);
 				mAdapter.notifyDataSetChanged();
 				chatRoomList.invalidate();
 			}

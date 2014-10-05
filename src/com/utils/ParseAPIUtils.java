@@ -79,47 +79,4 @@ public class ParseAPIUtils
 		  }
 		});
 	}
-
-	public static void sendMessage(String msg, EditText editText)
-	{
-		ParseObject newMsg = new ParseObject(Constants.MESSAGES_KEY);
-		newMsg.put(Constants.USER_ID_KEY, user.getUsername());
-		newMsg.put(Constants.MESSAGE_CONTENT, msg);
-		newMsg.saveInBackground(new SaveCallback() 
-		{
-			@Override
-			public void done(ParseException e) 
-			{
-				receiveMessage();
-			}
-		});
-		editText.setText("");
-		editText.setHint("enter message here");
-	}
-	
-	public static void receiveMessage()
-	{
-		ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.MESSAGES_KEY);
-		query.setLimit(Constants.MAX_MESSAGES);
-		query.orderByDescending("createdAt");
-		query.findInBackground(new FindCallback<ParseObject>() {
-			public void done(List<ParseObject> messages, ParseException e) 
-			{
-				if (e == null) 
-				{
-					final List<Message> newMessages = new ArrayList<Message>();					
-					int i = messages.size() - 1;
-					for (; i >= 0; i--) 
-					{
-						final Message message = new Message();
-						message.user = messages.get(i).getString(Constants.USER_ID_KEY);
-						message.contents = messages.get(i).getString(Constants.MESSAGE_CONTENT);
-						newMessages.add(message);
-					}
-					messageList.clear();
-					messageList.addAll(newMessages);
-				}
-			}
-		});
-	}
 }
