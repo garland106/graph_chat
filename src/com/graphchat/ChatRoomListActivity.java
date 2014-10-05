@@ -2,8 +2,6 @@ package com.graphchat;
 
 import java.util.List;
 
-import com.utils.chatRoom;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -80,6 +78,27 @@ public class ChatRoomListActivity extends Activity
 			viewholder.line2.setText(currentChatRoom.getNamesOfFriendsInRoom());
 			view.setTag(viewholder);
 			return view;
+		}
+		
+	}
+	
+	public class chatRoom 
+	{
+		public String title;
+		public String names;
+		
+		public chatRoom(String tit, String nameString)
+		{
+			title = tit;
+			names = nameString;
+		}
+		
+		public String getRoomName(){
+			return title;
+		}
+		
+		public String getNamesOfFriendsInRoom(){
+			return names;
 		}
 		
 	}
