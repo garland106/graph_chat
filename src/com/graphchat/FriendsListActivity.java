@@ -2,6 +2,7 @@ package com.graphchat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.utils.ChatFriend;
+import com.utils.ParseAPIUtils;
 
 
 public class FriendsListActivity extends Activity 
@@ -140,13 +142,15 @@ public class FriendsListActivity extends Activity
 			ViewHolder viewholder = new ViewHolder();
 			view = inflater.inflate(R.layout.friends_list_item, parent, false);
 			
-			ChatFriend current = mfriendslist.get(position);
+			ChatFriend current = 		mfriendslist.get(position);
 			viewholder.line1 = (TextView) view.findViewById(R.id.line1);
 			viewholder.line2 = (TextView) view.findViewById(R.id.line2);
 			viewholder.icon = (ImageView) view.findViewById(R.id.friendIcon);
 			viewholder.line1.setText(current.firstname);
 			viewholder.line2.setText(current.lastname);
-			viewholder.icon.setImageResource(R.drawable.defaultfriend);
+			String name = ParseAPIUtils.user.getUsername();
+			if(name.toLowerCase(Locale.US).endsWith("cat")) viewholder.icon.setImageResource(R.drawable.cateasteregg);
+			else viewholder.icon.setImageResource(R.drawable.defaultfriend);
 			view.setTag(viewholder);
 			return view;
 		}
