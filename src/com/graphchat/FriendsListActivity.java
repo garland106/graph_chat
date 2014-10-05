@@ -40,10 +40,13 @@ public class FriendsListActivity extends Activity
 		friendsLV = (ListView) findViewById(R.id.friendslistLV);
 		newChatButton = (ImageButton) findViewById(R.id.AddChatButton);
 		friendDetailList = new ArrayList<ChatFriend>();
+		
+		//make a fake friend
 		ChatFriend c = new ChatFriend();
 		c.firstname = "John";
 		c.lastname = "Smith";
 		friendDetailList.add(c);
+		
 		mAdapter = new FriendsAdapter(getApplicationContext(), friendDetailList);
 		friendsLV.setAdapter(mAdapter);
 		friendsLV.setOnItemClickListener(newchatlistener);

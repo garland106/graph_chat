@@ -8,22 +8,12 @@
     <!-- The height is set to half the height of the parent, which is 64 dip -->
 
     <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/name"
-        android:layout_alignBottom="@+id/name"
-        android:layout_alignRight="@+id/chatline"
-        android:text="Oct 5 | 11:08am"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
         android:id="@+id/chatline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
         android:layout_centerHorizontal="true"
         android:ellipsize="marquee"
+        android:paddingTop="13dp"
         android:paddingLeft="9dip"
         android:paddingRight="20dip"
         android:singleLine="true"
@@ -32,12 +22,13 @@
         android:textColor="#0000ff" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/chatroomname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/chatline"
         android:layout_alignParentTop="true"
-        android:text="Garland C."
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="13dp"
+        android:text="Bob Smith"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

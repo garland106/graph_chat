@@ -97,6 +97,7 @@ public class ChatRoomActivity extends Activity
 		
 		private class ViewHolder 
 		{
+			TextView displayname;
             TextView chatline;
         }
 		
@@ -133,9 +134,10 @@ public class ChatRoomActivity extends Activity
 			view = inflater.inflate(R.layout.chat_list_item, parent, false);
 			
 			Message mMsg = msgList.get(position);
-			String content = mMsg.user + " " + mMsg.contents;
+			viewholder.displayname = (TextView) view.findViewById(R.id.chatroomname);
 			viewholder.chatline = (TextView) view.findViewById(R.id.chatline);
-			viewholder.chatline.setText(content);
+			viewholder.chatline.setText(mMsg.contents);
+			viewholder.displayname.setText(mMsg.user);
 			view.setTag(viewholder);
 			return view;
 		}
