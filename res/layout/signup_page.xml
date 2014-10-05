@@ -25,6 +25,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignRight="@+id/signuplinearlayout"
                 android:ems="10"
+                android:text="garlnd106@gmail.com"
                 android:hint="username"
                 android:inputType="textEmailAddress" >
 
@@ -38,6 +39,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/userSignUpName"
                 android:ems="10"
+                android:text="qwerty"
                 android:hint="password"
                 android:inputType="textPassword" />
         </LinearLayout>
