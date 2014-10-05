@@ -5,11 +5,22 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
+    <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="USC Football"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="30sp" />
+
     <ListView
         android:id="@+id/lvChat"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_above="@+id/llSend"
+        android:layout_below="@+id/header"
         android:transcriptMode="alwaysScroll" />
 
     <RelativeLayout
@@ -27,6 +38,7 @@
             android:id="@+id/editMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
             android:layout_toLeftOf="@+id/btSend"
             android:gravity="top"
             android:hint="type message here"
