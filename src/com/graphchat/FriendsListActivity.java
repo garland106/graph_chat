@@ -105,6 +105,7 @@ public class FriendsListActivity extends Activity
 			ImageView img;
             TextView line1;
             TextView line2;
+            ImageView icon;
         }
 		
 		public FriendsAdapter(Context context, List<ChatFriend> items) 
@@ -142,8 +143,10 @@ public class FriendsListActivity extends Activity
 			ChatFriend current = mfriendslist.get(position);
 			viewholder.line1 = (TextView) view.findViewById(R.id.line1);
 			viewholder.line2 = (TextView) view.findViewById(R.id.line2);
+			viewholder.icon = (ImageView) view.findViewById(R.id.friendIcon);
 			viewholder.line1.setText(current.firstname);
 			viewholder.line2.setText(current.lastname);
+			viewholder.icon.setImageResource(R.drawable.defaultfriend);
 			view.setTag(viewholder);
 			return view;
 		}
