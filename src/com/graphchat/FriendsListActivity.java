@@ -39,6 +39,7 @@ public class FriendsListActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.friends_page);
 		
+		ParseAPIUtils.getUser();
 		friendsLV = (ListView) findViewById(R.id.friendslistLV);
 		newChatButton = (ImageButton) findViewById(R.id.AddChatButton);
 		friendDetailList = new ArrayList<ChatFriend>();

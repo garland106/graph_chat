@@ -63,7 +63,7 @@ public class ChatRoomActivity extends Activity
 		chatRoomList.setOnItemLongClickListener(branchlistener);
 		sendButton.setOnClickListener(sendListener);
 		//Set handler to refresh & poll for new msgs
-		handler.postDelayed(runnable, 100);
+		handler.postDelayed(runnable, 200);
 	}
 	
 	// Defines a runnable which is run every 100ms
@@ -79,18 +79,37 @@ public class ChatRoomActivity extends Activity
 	
 	private OnItemLongClickListener branchlistener = new OnItemLongClickListener() 
 	{
-
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) 
 		{
 			branchChat(pos);
 			Toast.makeText(getApplicationContext(), "Branching Chat" + pos, Toast.LENGTH_SHORT).show();
-			//ImageButton bb = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchButton;
-			//bb.setEnabled(true);
-			//bb.setVisibility(View.VISIBLE);
+			ImageButton bb = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchBack;
+			ImageButton bn = ((ChatRoomAdapter.ViewHolder) view.getTag()).branchNext;
+			bb.setEnabled(true);
+			bb.setVisibility(View.VISIBLE);
+			bn.setEnabled(true);
+			bn.setVisibility(View.VISIBLE);
 			return true;
-		}
-		
+		}	
+	};
+	
+	private OnClickListener branchNextListener = new OnClickListener()
+	{
+		@Override
+		public void onClick(View v) 
+		{
+			
+		}	
+	};
+	
+	private OnClickListener branchBackListener = new OnClickListener()
+	{
+		@Override
+		public void onClick(View v) 
+		{
+			
+		}	
 	};
 	/**
 	 * Parse API Function Calls
@@ -228,7 +247,8 @@ public class ChatRoomActivity extends Activity
 		{
 			TextView displayname;
             TextView chatline;
-            ImageButton branchButton;
+            ImageButton branchNext;
+            ImageButton branchBack;
         }
 		
 		public ChatRoomAdapter(Context context, List<Message> items) 
@@ -266,6 +286,8 @@ public class ChatRoomActivity extends Activity
 			Message mMsg = msgList.get(position);
 			viewholder.displayname = (TextView) view.findViewById(R.id.chatroomname);
 			viewholder.chatline = (TextView) view.findViewById(R.id.chatline);
+			viewholder.branchNext = (ImageButton) view.findViewById(R.id.backChatButton);
+			viewholder.branchBack = (ImageButton) view.findViewById(R.id.newSubChat);
 			viewholder.chatline.setText(mMsg.contents);
 			viewholder.displayname.setText(mMsg.user);
 			view.setTag(viewholder);
